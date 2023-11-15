@@ -2,6 +2,8 @@
 #include <fstream>
 #include <sstream>
 #include <filesystem>
+#include <dirent.h>
+#include <sys/stat.h>
 
 using namespace std;
 
@@ -338,8 +340,20 @@ void topopt::OC()
 void topopt::output()
 {
 
-	string filename = "./data/topopt_"+to_string(loop)+".txt";
-	ofstream outputFile(filename);
+    const char* folderPath = "./data";
+
+    // Check if the "data" folder exists, create it if not
+    struct stat info;
+    if (stat(folderPath, &info) != 0 || !(info.st_mode & S_IFDIR)) {
+        // Folder doesn't exist, create it
+        if (mkdir(folderPath, 0777) != 0) {
+            cerr << "Error creating directory: " << folderPath << std::endl;
+            return;
+        }
+    }
+
+    string filename = "./data/topopt_" + to_string(loop) + ".txt";
+    ofstream outputFile(filename);
 
     if (!outputFile.is_open()) {
         cerr << "Error opening file: " << filename << std::endl;
