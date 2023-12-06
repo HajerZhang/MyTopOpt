@@ -1,5 +1,5 @@
 # Compiler and flags
-CXX = g++
+CXX = clang++
 CXXFLAGS = -Wall -Wextra -std=c++11
 DEBUGFLAGS = -g
 
@@ -26,7 +26,10 @@ release: $(OBJ_FILES)
 # Build debug executable
 debug: CXXFLAGS += $(DEBUGFLAGS)
 debug: $(OBJ_FILES)
-	$(CXX) $(CXXFLAGS) $^ -o $(TARGET_DEBUG)
+	$(CXX) $(CXXFLAGS) $^ -o $(TARGET_DEBUG) -Wall -address -fsanitize=memory 
+	
+# -address -fsanitize=memory 
+# this is for memory leak detection
 
 # Compile source files to object files
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
