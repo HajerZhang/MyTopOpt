@@ -1,7 +1,7 @@
 # MyTopOpt
 
 
-> This is a simple topology optimization program completed in C++, while using python to complete the diagram, the project is completed in the linux architecture using VScode IDE.
+> This is a simple makefile to build c++ program folder template.
 
 
 ## Getting Started 
@@ -38,6 +38,11 @@ How to run:
 ```sh
 ./main.exe
 ```
+How to plot the result:
+
+```sh
+python3 plot.py
+```
 
 ### Usage example 
 
@@ -56,15 +61,17 @@ The final result:
 Install the python3 and the required packages, then run the plot.py to create the topology optimization result in file './plot'.
 
 ## Release History 
-
-* 0.2.0
+* 2.5
+    * Fixed a lot of bugs in version 2.0 which is now working properly
+* 2.0
     * Change the code structure, use the faster finite element method.
     * Replace the <strong>OC</strong> method with the <strong>MMA</strong> method.
     * Add the density filter. 
-* 0.1.0
+* 1.0
     * inital version：Basic 2D topology optimization
     * Python：Draw the topology optimization diagram with matplotlib
 ## Planned update
+* Improved operational efficiency (sparse matrix)
 * Heaviside function
 * Stress constraint
 * 3D topology optimization

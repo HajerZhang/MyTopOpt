@@ -64,14 +64,15 @@ void topmain()
     int ft;
 
     cout << "Enter 'nelx', 'nely', 'volfrac', 'penal', 'rmin' and 'filter' in sequence" << endl;
-    cout << "(Example: 3 3 0.5 3.0 1.5 1)" << endl;
-    // cin >> nelx >> nely >> volfrac >> penal >> rmin >> ft;
-    nelx = 10;
-    nely = 10;
-    volfrac = 0.5;
-    penal = 3.0;
-    rmin = 1.5;
-    ft = 1;
+    cout << "(tolerance: 0.02, max_iter: 200)" << endl;
+    cout << "(Example: 30 10 0.5 3.0 1.5 1)" << endl;
+    cin >> nelx >> nely >> volfrac >> penal >> rmin >> ft;
+    // nelx = 15;
+    // nely = 10;
+    // volfrac = 0.5;
+    // penal = 3.0;
+    // rmin = 1.5;
+    // ft = 1;
 
     // topopt model intialization
     topopt* opt = new topopt(nelx, nely, volfrac, penal, rmin, ft);
@@ -102,7 +103,14 @@ void topmain()
         filt.Filtering(opt->x, opt->hessg);
 
         // Call the Update function from the mma class
-        ch = mmasolver->Update(itr, opt->x, opt->fx, opt->gx, opt->dfdx, opt->dgdx, opt->hessf, opt->hessg);
+        opt->updateold();
+        mmasolver->Update(itr, opt->x, opt->fx, opt->gx, opt->dfdx, opt->dgdx, opt->hessf, opt->hessg);
+        filt.UpdateFilter(opt->xPhys, opt->x);
+        ch = opt->x[0] - opt->xold[0];
+        for (int i = 0; i < opt->n; i++)
+        {
+            ch = max(ch, abs(opt->x[i] - opt->xold[i]));
+        }
         cout << "iteration: " << itr << "  compliance: " << opt->fx << "  change: " << ch << endl;
         output(itr, opt->x, opt->nelx, opt->nely);
     }
@@ -130,11 +138,10 @@ void output(int loop, vector<double> x, int nelx, int nely)
         cerr << "Error opening file: " << filename << std::endl;
         return;
     }
-    int e=0;
+
     for (int i = 0; i < nely; ++i) {
         for (int j = 0; j < nelx; ++j) {
-            outputFile << x[e] << " ";
-            e++;
+            outputFile << x[i+j*nely] << " ";
         }
         outputFile << endl; 
     }

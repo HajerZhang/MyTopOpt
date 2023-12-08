@@ -87,3 +87,15 @@ void filter::Filtering(vector<double>& xP, vector<vector<double>>& dgdx)
 
     }
 }
+void filter::UpdateFilter(vector<double>& xP, vector<double> x)
+{
+    double sum;
+    for(int i = 0; i < x.size(); i++){
+        sum = 0;
+        for(int j = 0; j < x.size(); j++){
+
+            sum += H[i][j] * x[j];
+        }
+        xP[i] = sum / Hs[i];
+    }
+}

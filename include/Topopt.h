@@ -47,6 +47,12 @@ public:
     topopt();
     ~topopt();
     topopt(int nx, int ny, double v, double pe, double r, int f);
+    void updateold(){
+        for (int i = 0; i < n; i++)
+        {
+            xold[i] = x[i];
+        }
+    }
 };
 
 topopt::topopt()
@@ -78,8 +84,8 @@ topopt::topopt(int nx, int ny, double v, double pe, double r, int f)
     Emin = 0.000000001;
     Emax = E;
 
-    maxiter = 200;
-    tolerance = 0.01;
+    maxiter = 120;
+    tolerance = 0.02;
 
     m = 1;
     n = nele;

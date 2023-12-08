@@ -33,6 +33,7 @@ mma::mma(int nn, int mm, vector<double> x)
     albefa = 0.1;
     asyinit = 0.5;
     asyincr = 1.2;
+    asydecr = 0.7;
 
     alpha.resize(n, 0.0);
     beta.resize(n, 0.0);
@@ -77,17 +78,17 @@ void mma::Setasymptotes(int iter, const vector<double>& x)
         }
     }
     else if(iter > 3 ){
+        double factor = 1.0;
         for(int i = 0; i < n; i++){
-            double factor = (x[i] - xold1[i]) * (xold1[i] - xold2[i]);
-            if(factor > 0.0){
+            factor = 1.0;
+            double xxx = (x[i] - xold1[i]) * (xold1[i] - xold2[i]);
+            if(xxx > 0.0){
                 factor = asyincr;
             }
-            else if(factor < 0.0){
-                factor = asydecr;
+            else if(xxx < 0.0){
+                factor = asydecr; // fuck point
             }
-            else{
-                factor = 1.0;
-            }
+
             low[i] = x[i] - factor * (xold1[i] - low[i]);
             upp[i] = x[i] + factor * (upp[i] - xold1[i]);
         }
@@ -189,10 +190,14 @@ void mma::GenSub(vector<double> &xval, const double &f0val,const vector<double> 
 
     for(int i = 0; i < m; i++){
         b[i] = 0.0;
-        for(int j = 0; j < n; j++){
-            b[i] += P[i][j] * uxinv1[j] - Q[i][j] / xlinv1[j] - fval[i];
+        double sum = 0.0;
+        for(int j = 0; j < n; j++){\
+            sum += P[i][j] * uxinv1[j] - Q[i][j] / xlinv1[j];
+            
         }
+        b[i] = sum - fval[i];
     }
+    // cout << '0';
 }
 
 void mma::SolveSub(vector<double>& xval) 
@@ -465,12 +470,25 @@ void mma::SolveSub(vector<double>& xval)
             for(int i = 0; i < m; i++){
                 dellamyi[i] = dellam[i] + dely[i] / diagy[i];
             }
+            // key bug point : return A_j_i to 0.0
+            for(int i = 0; i < n; i++){
+                for(int j = 0; j < n; j++){
+                    for(int k = 0; k < m; k++){
+                        Axx[j][i] = 0.0;
+                    }    
+                }
+            }
             for(int i = 0; i < n; i++){
                 Axx[i][i] = diagx[i];
                 for(int j = 0; j < n; j++){
                     for(int k = 0; k < m; k++){
                         Axx[j][i] += GG[k][i] * diaglamyiinv[k] * GG[k][j];
                     }    
+                }
+            }
+            for(int i = 0; i < m; i++){
+                for(int j = 0; j < m; j++){
+                    azz[j][i] = 0.0;
                 }
             }
             for(int i = 0; i < m; i++){
@@ -770,13 +788,13 @@ void mma::SolveSub(vector<double>& xval)
     for(int i = 0; i < n; i++){
         xval[i] = x[i];
     }
-    cout << 'o';
+    // cout << '0';
 }
 
 vector<double> mma::SolveLinearSystem(vector<vector<double>> A, vector<double> b) 
 {
-    vector<double> x(n);
     int n = b.size();
+    vector<double> x(n);
 
 	for (int k = 0; k < n - 1; k++) {
 		for (int i = k + 1; i < n; i++){
