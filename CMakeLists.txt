@@ -5,7 +5,7 @@ project(
     LANGUAGES CXX
     VERSION 2.0.1
 )
-set(CMAKE_CXX_COMPILER "clang++")
+# set(CMAKE_CXX_COMPILER "clang++")
 
 include(GNUInstallDirs)
 

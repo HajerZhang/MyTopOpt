@@ -53,5 +53,4 @@ private:
     vector<vector<double>> P;
     vector<vector<double>> Q;
     vector<double> b;
-;
 };

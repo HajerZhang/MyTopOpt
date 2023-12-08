@@ -6,6 +6,7 @@ list(
     ${dir}/filter.cpp
     ${dir}/FiniteElement.cpp
     ${dir}/mma.cpp
+    ${dir}/Topopt.cpp
 )
 
 set(srcs ${srcs} PARENT_SCOPE)

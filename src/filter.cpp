@@ -49,10 +49,10 @@ void filter::Filtering(vector<double>& xP, vector<double>& dfx)
 {
     if(ft == 1){
         vector<double> dfxtemp = dfx;
-        for (int i = 0; i < dfx.size(); i++)
+        for (size_t i = 0; i < dfx.size(); i++)
         {
             dfx[i] = 0.0;
-            for (int j = 0; j < dfx.size(); j++)
+            for (size_t j = 0; j < dfx.size(); j++)
             {
                 dfx[i] += H[i][j] * dfxtemp[j] / Hs[j];
                 
@@ -71,10 +71,10 @@ void filter::Filtering(vector<double>& xP, vector<vector<double>>& dgdx)
     if(ft == 1){
         // volume fraction
         vector<double> dfxtemp = dgdx[0];
-        for (int i = 0; i < dgdx[0].size(); i++)
+        for (size_t i = 0; i < dgdx[0].size(); i++)
         {
             dgdx[0][i] = 0.0;
-            for (int j = 0; j < dgdx[0].size(); j++)
+            for (size_t j = 0; j < dgdx[0].size(); j++)
             {
                 dgdx[0][i] += H[i][j] * dfxtemp[j] / Hs[j];
                 

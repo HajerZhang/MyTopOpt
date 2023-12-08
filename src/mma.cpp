@@ -398,7 +398,7 @@ void mma::SolveSub(vector<double>& xval)
         }
         residunorm = sqrt(residunorm);
         residumax = residu[0];
-        for(int i = 0; i < residu.size(); i++){
+        for(size_t i = 0; i < residu.size(); i++){
             residumax = fmax(residumax, fabs(residu[i]));
         }
         int ittt = 0;
@@ -775,8 +775,8 @@ void mma::SolveSub(vector<double>& xval)
 
 vector<double> mma::SolveLinearSystem(vector<vector<double>> A, vector<double> b) 
 {
-    vector<double> x(n);
     int n = b.size();
+    vector<double> x(n);
 
 	for (int k = 0; k < n - 1; k++) {
 		for (int i = k + 1; i < n; i++){
