@@ -1,7 +1,7 @@
 # MyTopOpt
 
 
-> This is a simple makefile to build c++ program folder template.
+> This is a simple topology optimization program completed in C++, while using python to complete the diagram, the project is completed in the linux architecture using VScode IDE.
 
 
 ## Getting Started 
