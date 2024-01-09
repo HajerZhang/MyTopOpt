@@ -33,6 +33,7 @@ public:
     vector<double>  xold; 
     vector<double>  xPhys;
 
+
     double fx;
     vector<double> gx;
     vector<double> dfdx;
@@ -85,7 +86,7 @@ topopt::topopt(int nx, int ny, double v, double pe, double r, int f)
     Emax = E;
 
     maxiter = 120;
-    tolerance = 0.02;
+    tolerance = 0.01;
 
     m = 1;
     n = nele;

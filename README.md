@@ -61,19 +61,21 @@ The final result:
 Install the python3 and the required packages, then run the plot.py to create the topology optimization result in file './plot'.
 
 ## Release History 
-* 2.5
-    * Fixed a lot of bugs in version 2.0 which is now working properly
-* 2.0
-    * Change the code structure, use the faster finite element method.
-    * Replace the <strong>OC</strong> method with the <strong>MMA</strong> method.
-    * Add the density filter. 
 * 1.0
     * inital version：Basic 2D topology optimization
     * Python：Draw the topology optimization diagram with matplotlib
+* 2.0
+    * Change the code structure, use the faster finite element method.
+    * Replace the <strong>OC</strong> method with the <strong>MMA</strong> method.
+    * Add the density filter.  
+* 2.5
+    * Fixed a lot of bugs in version 2.0 which is now working properly   
+* 2.6
+    * Added Sensitivity filtering and Heaviside projection filter.
 ## Planned update
 * Improved operational efficiency (sparse matrix)
-* Heaviside function
 * Stress constraint
+* Displacement constraint
 * 3D topology optimization
 ## Authors 
 

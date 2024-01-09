@@ -66,6 +66,7 @@ void topmain()
     cout << "Enter 'nelx', 'nely', 'volfrac', 'penal', 'rmin' and 'filter' in sequence" << endl;
     cout << "(tolerance: 0.02, max_iter: 200)" << endl;
     cout << "(Example: 30 10 0.5 3.0 1.5 1)" << endl;
+    cout << "(filter=1-density;2-sensitivity;3-heaviside_projection)" << endl;
     cin >> nelx >> nely >> volfrac >> penal >> rmin >> ft;
     // nelx = 15;
     // nely = 10;
@@ -81,7 +82,7 @@ void topmain()
     fe.GetEleStiffMat();
     fe.BoundaryCondition();
     // filter intialization
-    filter filt(opt->nelx, opt->nely, opt->rmin, opt->ft);
+    filter filt(opt->x, opt->xPhys,opt->nelx, opt->nely, opt->rmin, opt->ft);
     // mma intialization
     mma *mmasolver = new mma(opt->n, opt->m, opt->x);
 
@@ -90,18 +91,16 @@ void topmain()
 
     while (itr < opt->maxiter && ch > opt->tolerance){
         itr++;
-
+        filt.loopbeta++;
         fe.AssembleGloStiffMat(opt->xPhys, opt->Emax, opt->Emin, opt->penal); 
         fe.Solve();
         fe.GetUpdate(opt->fx, opt->gx, opt->dfdx, opt->dgdx,
             opt->hessf, opt->hessg,
             opt->xPhys, opt->Emin, opt->Emax, opt->penal, opt->volfrac, itr);
         
-        filt.Filtering(opt->xPhys, opt->dfdx);
-        filt.Filtering(opt->xPhys, opt->hessf);
-        filt.Filtering(opt->x, opt->dgdx);
-        filt.Filtering(opt->x, opt->hessg);
-
+        
+        filt.Filtering(opt->x, opt->dfdx, opt->dgdx);
+        filt.Filtering(opt->x, opt->hessf, opt->hessg);
         // Call the Update function from the mma class
         opt->updateold();
         mmasolver->Update(itr, opt->x, opt->fx, opt->gx, opt->dfdx, opt->dgdx, opt->hessf, opt->hessg);
@@ -111,6 +110,7 @@ void topmain()
         {
             ch = max(ch, abs(opt->x[i] - opt->xold[i]));
         }
+        if(opt->ft == 3) filt.Heaviside(ch, opt->tolerance);
         cout << "iteration: " << itr << "  compliance: " << opt->fx << "  change: " << ch << endl;
         output(itr, opt->x, opt->nelx, opt->nely);
     }
